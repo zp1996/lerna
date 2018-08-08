@@ -36,7 +36,7 @@ describe("npm-publish", () => {
   };
 
   it("runs npm publish in a directory with --tag support", async () => {
-    const result = await npmPublish(pkg, "published-tag", { npmClient: "npm" });
+    const result = await npmPublish(pkg, "published-tag", { npmClient: "npm", otp: "12345" });
 
     expect(result).toBe(pkg);
     expect(ChildProcessUtilities.exec).toHaveBeenLastCalledWith(
@@ -44,7 +44,9 @@ describe("npm-publish", () => {
       ["publish", "--ignore-scripts", "--tag", "published-tag", "test-1.10.100.tgz"],
       {
         cwd: pkg.location,
-        env: {},
+        env: {
+          npm_config_otp: "12345",
+        },
         pkg,
       }
     );
