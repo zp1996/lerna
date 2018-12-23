@@ -43,6 +43,13 @@ function filterOptions(yargs) {
       `,
       type: "boolean",
     },
+    "ignore-collect-dependents": {
+      describe: dedent`
+        Ignore collect dependent when running a command
+        regardless of --scope, --ignore, or --since.
+      `,
+      type: "boolean",
+    },
   };
 
   return yargs.options(opts).group(Object.keys(opts), "Filter Options:");

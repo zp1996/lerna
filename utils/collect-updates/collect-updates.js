@@ -21,7 +21,7 @@ function collectUpdates(filteredPackages, packageGraph, execOpts, commandOptions
 
   if (hasTags(execOpts)) {
     // describe the last annotated tag in the current branch
-    const { sha, refCount, lastTagName } = describeRef.sync(execOpts, commandOptions);
+    const { sha, refCount, lastTagName } = describeRef.sync(execOpts, commandOptions.includeMergedTags);
     // TODO: warn about dirty tree?
 
     if (refCount === "0" && forced.size === 0) {
@@ -68,8 +68,11 @@ function collectUpdates(filteredPackages, packageGraph, execOpts, commandOptions
     });
   }
 
-  const dependents = collectDependents(candidates);
-  dependents.forEach(node => candidates.add(node));
+  // support don't need collect dependent
+  if (!commandOptions.ignoreCollectDependents) {
+    const dependents = collectDependents(candidates);
+    dependents.forEach(node => candidates.add(node));
+  }
 
   // The result should always be in the same order as the input
   const updates = [];
